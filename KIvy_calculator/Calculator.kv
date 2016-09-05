@@ -1,5 +1,6 @@
 #: import get_color_from_hex kivy.utils.get_color_from_hex
 
+
 BoxLayout:
     orientation: "vertical"
 	display: display_input
@@ -7,33 +8,51 @@ BoxLayout:
 	ActionBar:
 		ActionView:
 			ActionPrevious:
-				title: 'Calkvlator'
-				with_previous: False
+				title: '電卓'
+				with_previous: False # trueだと頭のロゴがボタンになる？
+            ActionOverflow:
+            ActionButton:
+                text: '設定'
+            ActionButton:
+                text: '音'
+                icon: 'atlas://data/images/defaulttheme/audio-volume-high'
+            ActionGroup:    # ボタンをグループ化する
+                text: '種類'
+                ActionButton:
+                    text: '関数電卓'
+                ActionButton:
+                    text: 'プログラマー'
+
 
     TextInput:
 		id: display_input
 		size_hint_y: 1
-		font_name: 'Roboto'
+#		font_name: 'Roboto'
 		font_size: 60
     Keyboard:
 		size_hint_y: 3.5
 
 
-<Keyboard@GridLayout>:
+<Keyboard@GridLayout>:  # class Keyboard(GridLayout):と同じ意味
+
+    # 4列×5行のボタンを作成する
 	cols: 4
 	rows: 5
+
 	spacing: 2
 	padding: 4
 
-	ClearButton:
-		text: "C"
-	OperatorButton:
-		text: "/"
-	OperatorButton:
-		text: "*"
+    # 1列目
+	ClearButton:    # ボタンの種類
+		text: "C"   # ボタンの表示名
+	CalcButton:
+		text: "%"
 	DelButton:
 		text: "<x"
+	OperatorButton:
+		text: "/"
 
+    # 2列目
 	NumberButton:
 		text: "7"
 	NumberButton:
@@ -41,8 +60,9 @@ BoxLayout:
 	NumberButton:
 		text: "9"
 	OperatorButton:
-		text: "-"
+		text: "*"
 
+    # 3列目
 	NumberButton:
 		text: "4"
 	NumberButton:
@@ -50,23 +70,25 @@ BoxLayout:
 	NumberButton:
 		text: "6"
 	OperatorButton:
-		text: "+"
+		text: "-"
 
+    # 4列目
 	NumberButton:
 		text: "1"
 	NumberButton:
 		text: "2"
 	NumberButton:
 		text: "3"
-	CalcButton:
-		text: "%"
+	OperatorButton:
+		text: "+"
 
+    # 5列目
+	CalcButton:
+		text: "+/-"
 	NumberButton:
 		text: "0"
 	CalcButton:
 		text: "."
-	CalcButton:
-		text: "+/-"
 	EqualButton:
 		text: "="
 
@@ -76,14 +98,14 @@ BoxLayout:
 	background_normal: ''
 	background_down: ''
 	background_color: get_color_from_hex("#1F6982")
-	on_press: self.background_color = get_color_from_hex("#184B5C")
+    on_press: self.background_color = get_color_from_hex("#184B5C")
 	on_release: self.background_color = get_color_from_hex("#1F6982")
 
 <NumberButton@CalcButton>:
-	font: "Roboto"
+	#font: "Roboto"
 	font_size: 30
 	bold: True
-	on_press: app.print_number(self.text)
+	on_press: app.print_number(self.text)   # ボタンが押されたとき main.pyの　Calculatorクラスのprint_number()が実行される
 
 <OperatorButton@CalcButton>:
 	on_press: app.print_operator(self.text)
